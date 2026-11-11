@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mezo Wave 2: Build with MUSD and MEZO</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f8f9fa;
+      transition: background-color 0.3s;
+    }
+    
+    h1, h2, h3 {
+      color: #1a365d;
+      margin-top: 1.5em;
+    }
+    
+    h1 {
+      font-size: 2.2em;
+      text-align: center;
+      margin-bottom: 1.5em;
+      color: #0d47a1;
+      border-bottom: 3px solid #0d47a1;
+      padding-bottom: 10px;
+    }
+    
+    h2 {
+      color: #0d47a1;
+      font-size: 1.5em;
+      margin-top: 2em;
+    }
+    
+    h3 {
+      color: #1a365d;
+      font-size: 1.2em;
+      margin-top: 1.5em;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #0d47a1 0%, #1a365d 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+    
+    .content {
+      padding: 20px;
+    }
+    
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f0f8ff;
+    }
+    
+    .card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card h4 {
+      color: #0d47a1;
+      margin-top: 0;
+      font-size: 1.1em;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .feature i {
+      color: #0d47a1;
+      margin-right: 10px;
+      font-size: 1.2em;
+    }
+    
+    .highlight {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 4px solid #0d47a1;
+    }
+    
+    .button {
+      display: inline-block;
+      background: #0d47a1;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      margin: 10px 0;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    
+    .button:hover {
+      background: #1a365d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .button:active {
+      transform: translateY(0);
+    }
+    
+    .demo-container {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px dashed #0d47a1;
+      border-radius: 8px;
+      background: #f0f8ff;
+    }
+    
+    .demo-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    
+    .demo-result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #e3f2fd;
+      min-height: 100px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      font-size: 0.9em;
+    }
+    
+    .status {
+      font-weight: bold;
+      color: #0d47a1;
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 0.9em;
+    }
+    
+    .table th, .table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    
+    .table th {
+      background-color: #0d47a1;
+      color: white;
+    }
+    
+    .table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    .tag {
+      display: inline-block;
+      padding: 4px 8px;
+      margin: 4px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+    
+    .tag.musd {
+      background: #e3f2fd;
+      color: #0d47a1;
+      border: 1px solid #0d47a1;
+    }
+    
+    .tag.mezo {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #2e7d32;
+    }
+    
+    .tag.cloudflare {
+      background: #fff3e0;
+      color: #e65100;
+      border: 1px solid #e65100;
+    }
+    
+    .tag.open-source {
+      background: #f3e5f5;
+      color: #7b1fa2;
+      border: 1px solid #7b1fa2;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+      font-weight: bold;
+      margin: 5px;
+    }
+    
+    .badge.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .badge.warning {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .badge.info {
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
+    
+    .progress-bar {
+      height: 20px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
+    
+    .progress {
+      height: 100%;
+      background: linear-gradient(90deg, #0d47a1 0%, #1a365d 100%);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    
+    .timeline {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f0f8ff;
+      border-radius: 8px;
+    }
+    
+    .timeline-item {
+      margin: 10px 0;
+      padding: 10px;
+      border-left: 4px solid #0d47a1;
+      background: white;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .timeline-item h4 {
+      margin: 0 0 5px 0;
+      color: #0d47a1;
+    }
+    
+    .timeline-item p {
+      margin: 0;
+      font-size: 0.9em;
+      color: #555;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
+      border-top: 1px solid #ddd;
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 1.8em;
+      }
+      
+      .container {
+        margin-bottom: 10px;
+      }
+      
+      .button {
+        width: 100%;
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      Mezo Wave 2: Build with MUSD and MEZO
+    </div>
+    
+    <div class="content">
+      <div class="section">
+        <h2>💡 Problem</h2>
+        <p>For most users, interacting with decentralized finance (DeFi)—specifically borrowing and lending protocols on networks like Mezo—is an exercise in deciphering hex codes and raw numbers on a block explorer. Understanding the relationship between collateral, debt, and risk usually requires manual calculation or deep technical knowledge of the `TroveManager` and `PriceFeed` contracts. This opacity creates a barrier to entry for new participants in the MUSD ecosystem.</p>
+      </div>
+      
+      <div class="section">
+        <h2>🚀 Solution</h2>
+        <p>TxExplain is a lightweight, serverless translation layer developed as a Cloudflare Worker. Instead of showing raw transaction logs, it interprets the on-chain state and provides a natural language summary. Specifically for Mezo, it targets borrower addresses to instantly surface critical financial metrics: current collateral, outstanding debt, accumulated interest, and overall risk profile.</p>
+      </div>
+      
+      <div class="section">
+        <h2>✅ Fitting the Listing: Mezo Wave 2</h2>
+        <div class="table">
+          <table>
+            <tr>
+              <th>Requirement</th>
+              <th>TxExplain Feature</th>
+            </tr>
+            <tr>
+              <td><strong>MUSD/MEZO Integration</strong></td>
+              <td>Directly integrates with Mezo's `TroveManager` and `PriceFeed` contracts to explain the movements and states of MUSD positions.</td>
+            </tr>
+            <tr>
+              <td><strong>Deployment (Mezo/Base/ETH)</strong></td>
+              <td>Deployed as a high-performance Cloudflare Worker with a dedicated endpoint for Mezo Testnet.</td>
+            </tr>
+            <tr>
+              <td><strong>Wave 2 Progress</strong></td>
+              <td>Evolved from a general EVM transaction explainer to a specialized Mezo-aware agent capable of reading specific borrowing protocol logic.</td>
+            </tr>
+            <tr>
+              <td><strong>Open Source</strong></td>
+              <td>Full codebase available under MIT license.</td>
+            </tr>
+            <tr>
+              <td><strong>Live Access</strong></td>
+              <td>Fully operational read-only API/Web interface.</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>⚙️ Architecture</h2>
+        <div class="card">
+          <h4>Core Components</h4>
+          <div class="feature">
+            <i>•</i> <strong>Frontend/API:</strong> Cloudflare Workers (Edge Runtime)
+          </div>
+          <div class="feature">
+            <i>•</i> <strong>Blockchain Interaction:</strong> Read-only RPC calls to Mezo Testnet
+          </div>
+          <div class="feature">
+            <i>•</i> <strong>Logic:</strong> Custom parser mapping `TroveManager` function outputs to human-readable templates based on asset types (BTC/MUSD)
+          </div>
+          <div class="feature">
+            <i>•</i> <strong>License:</strong> MIT
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>🎯 Try It</h2>
+        <div class="card">
+          <h4>Mezo Specific Explorer</h4>
+          <p>https://txexplain-mezo.muhammetkarakurt1234.workers.dev</p>
+          <h4>General EVM Explorer</h4>
+          <p>https://txexplain.muhammetkarakurt1234.workers.dev</p>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>🚀 Status & Roadmap</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h4>Live Today ✅</h4>
+            <p>Basic EVM transaction explanation</p>
+            <p>Mezo Testnet Extension: Fetching Collateral, Debt, Interest, and Risk for borrower addresses</p>
+            <p>Deployment on Cloudflare Workers global edge network</p>
+          </div>
+          <div class="timeline-item">
+            <h4>TO BUILD 🛠️</h4>
+            <p><strong>Real-time Alerting:</strong> Notify users when their risk level changes based on `PriceFeed` updates.</p>
+            <p><strong>Mult-Transaction Narrative:</strong> Ability to group multiple transactions into a "story" (e.g., "User deposited BTC, borrowed MUSD, and paid interest").</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>⚠️ Limitations</h2>
+        <div class="card">
+          <p><strong>Read-Only:</strong> Does not facilitate transactions; purely for analysis.</p>
+          <p><strong>Metrics:</strong> Currently operates as a utility tool without user tracking or analytics.</p>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>📊 Project Details</h2>
+        <div class="highlight">
+          <p><strong>Prize:</strong> $7,000 USD in MEZO grants</p>
+          <p><strong>Deadline:</strong> November 15, 2026</p>
+          <p><strong>Score:</strong> 78.2</p>
+          <p><strong>Tags:</strong> 
+            <span class="tag musd">MUSD</span> 
+            <span class="tag mezo">MEZO</span> 
+            <span class="tag cloudflare">Cloudflare</span> 
+            <span class="tag open-source">Open Source</span>
+          </p>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>🔍 Interactive Demo</h2>
+        <div class="demo-container">
+          <p>Enter a Mezo Testnet borrower address to see a simulated explanation of their position:</p>
+          <input type="text" id="addressInput" class="demo-input" placeholder="Enter a Mezo Testnet address (e.g., 0x123...)" value="0x1234567890123456789012345678901234567890">
+          <button id="analyzeBtn" class="button">Analyze Position</button>
+          <div id="status" class="status"></div>
+          <div id="result" class="demo-result"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>© 2026 Mezo Wave 2 Hackathon | Built with Cloudflare Workers | MIT License</p>
+    </div>
+  </div>
+
+  <script>
+    // Mock data for the demo - in a real implementation, this would call the actual API
+    const mockData = {
+      "0x1234567890123456789012345678901234567890": {
+        "collateral": "1.25 BTC",
+        "debt": "5000 MUSD",
+        "interest": "15.2%",
+        "riskLevel": "High",
+        "healthFactor": "1.8",
+        "status": "Active",
+        "lastUpdated": "2026-11-10T10:30:00Z"
+      },
+      "0xabcdefabcdefabcdefabcdefabcdefabcdef": {
+        "collateral": "0.8 BTC",
+        "debt": "2500 MUSD",
+        "interest": "12.7%",
+        "riskLevel": "Medium",
+        "healthFactor": "2.3",
+        "status": "Active",
+        "lastUpdated": "2026-11-10T09:15:00Z"
+      },
+      "0x9876543210987654321098765432109876543210": {
+        "collateral": "2.1 BTC",
+        "debt": "10000 MUSD",
+        "interest": "18.5%",
+        "riskLevel": "Critical",
+        "healthFactor": "1.2",
+        "status": "Underwater",
+        "lastUpdated": "2026-11-10T08:45:00Z"
+      }
+    };
+    
+    // Mock response for the API
+    function mockApiCall(address) {
+      // Simulate network delay
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const data = mockData[address] || {
+            "collateral": "0 BTC",
+            "debt": "0 MUSD",
+            "interest": "0%",
+            "riskLevel": "Unknown",
+            "healthFactor": "0",
+            "status": "Not Found",
+            "lastUpdated": "2026-11-10T00:00:00Z"
+          };
+          resolve(data);
+        }, 800);
+      });
+    }
+    
+    // Function to generate human-readable explanation
+    function generateExplanation(data, address) {
+      let explanation = `📊 Transaction Analysis for Mezo Borrower: ${address}\n\n`;
+      
+      if (data.status === "Not Found") {
+        return `❌ No position found for address ${address}. Please check the address and try again.`;
+      }
+      
+      explanation += `✅ Position Status: ${data.status}\n\n`;
+      explanation += `🔹 Collateral: ${data.collateral}\n`;
+      explanation += `🔹 Debt: ${data.debt}\n`;
+      explanation += `🔹 Interest Rate: ${data.interest}\n`;
+      explanation += `🔹 Health Factor: ${data.healthFactor}\n\n`;
+      
+      if (data.riskLevel === "Critical") {
+        explanation += `⚠️ WARNING: This position is at CRITICAL risk. The health factor is below 1.5, which means the position is likely to be liquidated soon.\n`;
+        explanation += `  - Consider adding more collateral or repaying some debt to avoid liquidation.\n\n`;
+      } else if (data.riskLevel === "High") {
+        explanation += `⚠️ WARNING: This position is at HIGH risk. The health factor is below 2.0, which means it's approaching liquidation.\n`;
+        explanation += `  - Consider adding more collateral or repaying some debt to reduce risk.\n\n`;
+      } else if (data.riskLevel === "Medium") {
+        explanation += `⚠️ This position is at MEDIUM risk. The health factor is between 2.0 and 2.5, which is acceptable but could improve.\n`;
+        explanation += `  - Consider adding more collateral or repaying some debt to improve your position.\n\n`;
+      } else {
+        explanation += `✅ This position is in a healthy state with a good health factor.\n\n`;
+      }
+      
+      explanation += `📅 Last Updated: ${data.lastUpdated}\n`;
+      explanation += `🔗 For more details, visit the Mezo Testnet explorer or the TxExplain service.\n`;
+      
+      return explanation;
+    }
+    
+    // Add event listener to the button
+    document.getElementById('analyzeBtn').addEventListener('click', async () => {
+      const address = document.getElementById('addressInput').value.trim();
+      const statusEl = document.getElementById('status');
+      const resultEl = document.getElementById('result');
+      
+      // Validate address format
+      if (!address || !address.startsWith('0x') || address.length !== 42) {
+        statusEl.textContent = '❌ Invalid address format. Please enter a valid Mezo Testnet address.';
+        statusEl.style.color = '#c62828';
+        resultEl.textContent = '';
+        return;
+      }
+      
+      // Show loading state
+      statusEl.textContent = '🔄 Analyzing position...';
+      statusEl.style.color = '#0d47a1';
+      resultEl.textContent = '';
+      
+      try {
+        // Call the mock API
+        const data = await mockApiCall(address);
+        
+        // Generate the explanation
+        const explanation = generateExplanation(data, address);
+        
+        // Display the result
+        resultEl.textContent = explanation;
+        statusEl.textContent = '✅ Analysis complete!';
+        statusEl.style.color = '#2e7d32';
+        
+      } catch (error) {
+        statusEl.textContent = '❌ Error analyzing position. Please try again later.';
+        statusEl.style.color = '#c62828';
+        resultEl.textContent = '';
+      }
+    });
+    
+    // Allow pressing Enter to trigger analysis
+    document.getElementById('addressInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.getElementById('analyzeBtn').click();
+      }
+    });
+  </script>
+</body>
+</html>
